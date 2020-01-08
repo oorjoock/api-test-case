@@ -6,8 +6,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource()
@@ -86,27 +84,6 @@ class Transaction
         $this->transactionEntries[] = $entry;
 
         return $this;
-    }
-
-    /**
-     * @Assert\Callback()
-     *
-     * @param ExecutionContextInterface $context
-     */
-    public function checkNegativeBalance(ExecutionContextInterface $context)
-    {
-        /** @var self $transaction */
-        $transaction = $context->getObject();
-        $entries = $transaction->getTransactionEntries();
-
-        $sum = 0;
-        foreach ($entries as $entry) {
-            $sum += $entry->getAmount();
-        }
-
-        if ($sum < 0) {
-            $context->addViolation('Balance is less than 0');
-        }
     }
 
 }

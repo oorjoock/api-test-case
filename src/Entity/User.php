@@ -26,13 +26,18 @@ class User
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Account", mappedBy="user")
+     * @var ArrayCollection|Account[]
+     *
+     * @ORM\OneToMany(
+     *    targetEntity="App\Entity\Account",
+     *    mappedBy="user"
+     * )
      */
-    private $account;
+    private $accounts;
 
     public function __construct()
     {
-        $this->account = new ArrayCollection();
+        $this->accounts = new ArrayCollection();
     }
 
     /**
@@ -58,9 +63,9 @@ class User
     /**
      * @return Collection|Account[]
      */
-    public function getAccount(): Collection
+    public function getAccounts(): Collection
     {
-        return $this->account;
+        return $this->accounts;
     }
 
     /**
@@ -70,8 +75,8 @@ class User
      */
     public function addAccount(Account $account): self
     {
-        if (!$this->account->contains($account)) {
-            $this->account[] = $account;
+        if (!$this->accounts->contains($account)) {
+            $this->accounts[] = $account;
             $account->setUser($this);
         }
 
@@ -85,8 +90,8 @@ class User
      */
     public function removeAccount(Account $account): self
     {
-        if ($this->account->contains($account)) {
-            $this->account->removeElement($account);
+        if ($this->accounts->contains($account)) {
+            $this->accounts->removeElement($account);
             if ($account->getUser() === $this) {
                 $account->setUser(null);
             }
