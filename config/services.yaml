@@ -23,5 +23,12 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    app.funds.transfer_processor:
+        class: App\Service\FundsTransferProcessor
+        arguments: ['@doctrine.orm.entity_manager']
+        public: true
+
+    app.transaction.doctrine_service:
+        class: App\Service\Transaction\DoctrineTransactionService
+        arguments: ['@doctrine.orm.entity_manager']
+        public: true
